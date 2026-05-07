@@ -308,8 +308,8 @@ function App() {
     async function loadData() {
       try {
         const [matchesResponse, possessionsResponse] = await Promise.all([
-            fetch(`public/data/matches.json`),
-            fetch(`public/data/possessions.json`)
+            fetch(`https://smenaquispe.github.io/proyecto-ciencia-datos/data/matches.jsonn`),
+            fetch(`https://smenaquispe.github.io/proyecto-ciencia-datos/data/possessions.json`)
         ]);
 
         if (!matchesResponse.ok || !possessionsResponse.ok) {
