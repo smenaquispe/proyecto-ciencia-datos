@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        StatsBomb Interactive Visualization
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- ========================================================== -->
+        <!-- HEADER -->
+        <!-- ========================================================== -->
+
+        <header class="header">
+
+            <h1>
+                ⚽ StatsBomb Analysis
+            </h1>
+
+            <p>
+                Interactive possession and pass visualization
+            </p>
+
+        </header>
+
+        <!-- ========================================================== -->
+        <!-- CONTROLS -->
+        <!-- ========================================================== -->
+
+        <section class="controls">
+
+            <!-- MATCH -->
+            <div class="control-group">
+
+                <label for="matchSelect">
+                    Partido
+                </label>
+
+                <select id="matchSelect">
+                    <option value="">
+                        Loading matches...
+                    </option>
+                </select>
+
+            </div>
+
+            <!-- TEAM -->
+            <div class="control-group">
+
+                <label for="teamSelect">
+                    Equipo
+                </label>
+
+                <select id="teamSelect">
+
+                    <option value="">
+                        -- Todos --
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- FILTER -->
+            <div class="control-group">
+
+                <label for="filterType">
+                    Filtro
+                </label>
+
+                <select id="filterType">
+
+                    <option value="">
+                        Todas
+                    </option>
+
+                    <option value="with-shot">
+                        Con shot
+                    </option>
+
+                    <option value="with-goal">
+                        Con gol
+                    </option>
+
+                    <option value="no-goal">
+                        Sin gol
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- BUTTONS -->
+            <div class="control-group buttons">
+
+                <button
+                    id="prevBtn"
+                    class="btn btn-nav"
+                >
+                    ⬅ Prev
+                </button>
+
+                <button
+                    id="playBtn"
+                    class="btn btn-play"
+                >
+                    ▶ Play
+                </button>
+
+                <button
+                    id="nextBtn"
+                    class="btn btn-nav"
+                >
+                    Next ➡
+                </button>
+
+                <button
+                    id="resetBtn"
+                    class="btn btn-reset"
+                >
+                    ↺ Reset
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- ========================================================== -->
+        <!-- MAIN -->
+        <!-- ========================================================== -->
+
+        <main class="main-content">
+
+            <!-- ====================================================== -->
+            <!-- FIELD -->
+            <!-- ====================================================== -->
+
+            <section class="canvas-container">
+
+                <canvas
+                    id="fieldCanvas"
+                    width="1050"
+                    height="680"
+                >
+                </canvas>
+
+                <div class="canvas-info">
+
+                    <span id="sequenceInfo">
+                        Loading...
+                    </span>
+
+                </div>
+
+            </section>
+
+            <!-- ====================================================== -->
+            <!-- SIDEBAR -->
+            <!-- ====================================================== -->
+
+            <aside class="sidebar">
+
+                <!-- ================================================== -->
+                <!-- STATS -->
+                <!-- ================================================== -->
+
+                <section class="stats-panel">
+
+                    <h3>
+                        📊 Statistics
+                    </h3>
+
+                    <div class="stats-content">
+
+                        <div class="stat-item">
+
+                            <span class="stat-label">
+                                Possessions
+                            </span>
+
+                            <span
+                                class="stat-value"
+                                id="totalSequences"
+                            >
+                                0
+                            </span>
+
+                        </div>
+
+                        <div class="stat-item">
+
+                            <span class="stat-label">
+                                With shot
+                            </span>
+
+                            <span
+                                class="stat-value"
+                                id="withShot"
+                            >
+                                0
+                            </span>
+
+                        </div>
+
+                        <div class="stat-item">
+
+                            <span class="stat-label">
+                                Goals
+                            </span>
+
+                            <span
+                                class="stat-value"
+                                id="withGoal"
+                            >
+                                0
+                            </span>
+
+                        </div>
+
+                        <div class="stat-item">
+
+                            <span class="stat-label">
+                                Conversion
+                            </span>
+
+                            <span
+                                class="stat-value"
+                                id="conversionRate"
+                            >
+                                0%
+                            </span>
+
+                        </div>
+
+                        <div class="stat-item">
+
+                            <span class="stat-label">
+                                Avg passes
+                            </span>
+
+                            <span
+                                class="stat-value"
+                                id="avgPasses"
+                            >
+                                0
+                            </span>
+
+                        </div>
+
+                        <div class="stat-item">
+
+                            <span class="stat-label">
+                                Accuracy
+                            </span>
+
+                            <span
+                                class="stat-value"
+                                id="accuracy"
+                            >
+                                0%
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- ================================================== -->
+                <!-- SEQUENCES -->
+                <!-- ================================================== -->
+
+                <section class="sequences-panel">
+
+                    <h3>
+                        🎬 Possessions
+                    </h3>
+
+                    <div
+                        id="sequencesList"
+                        class="sequences-list"
+                    >
+
+                        <p>
+                            Loading possessions...
+                        </p>
+
+                    </div>
+
+                </section>
+
+            </aside>
+
+        </main>
+
+        <!-- ========================================================== -->
+        <!-- DETAILS -->
+        <!-- ========================================================== -->
+
+        <section class="details-panel">
+
+            <h3>
+                📋 Possession Details
+            </h3>
+
+            <div
+                id="detailsContent"
+                class="details-content"
+            >
+
+                <p>
+                    Select a possession
+                </p>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- SCRIPT -->
+    <!-- ============================================================= -->
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>
