@@ -308,8 +308,8 @@ function App() {
     async function loadData() {
       try {
         const [matchesResponse, possessionsResponse] = await Promise.all([
-          fetch('/data/matches.json'),
-          fetch('/data/possessions.json')
+            fetch(`${import.meta.env.BASE_URL}data/matches.json`),
+            fetch(`${import.meta.env.BASE_URL}data/possessions.json`)
         ]);
 
         if (!matchesResponse.ok || !possessionsResponse.ok) {

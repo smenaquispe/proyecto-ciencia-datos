@@ -21,6 +21,7 @@ jobs:
           cache: npm
 
       - run: npm ci
+      - run: mkdir -p public/data && cp data/*.json public/data/
       - run: npm run build
 
       - uses: actions/upload-pages-artifact@v3
