@@ -1,16 +1,16 @@
-# ⚽ StatsBomb Interactive Analysis
+# ⚽ StatsBomb Interactive Dashboard
 
-Visualización interactiva de pases, goles y secuencias de juego con datos de StatsBomb.
+Visualización interactiva de pases, posesión, heatmap y dominancia con React, Vite y datos de StatsBomb.
 
 ## 📋 Descripción
 
-Este proyecto descarga datos de la Premier League 2017/18 desde StatsBomb (datos públicos) y crea una visualización interactiva donde puedes:
+Este proyecto descarga datos públicos de StatsBomb y genera un dashboard donde puedes:
 
-- 👀 Ver secuencias de pases en el campo de fútbol
-- ⚽ Identificar qué secuencias terminaron en gol
-- 🎯 Analizar shots y sus resultados
-- 📊 Ver estadísticas en tiempo real
-- 🎬 Reproducir automáticamente todas las secuencias
+- 👀 Ver pases sobre el campo con una vista interactiva
+- 🧊 Explorar un mapa de calor adicional
+- 📊 Revisar la posesión por equipos
+- 📈 Ver cómo cambia la dominancia minuto a minuto
+- 🏃 Consultar un ranking de jugadores con pases efectivos minuto a minuto
 
 ## 🚀 Inicio Rápido
 
@@ -18,6 +18,7 @@ Este proyecto descarga datos de la Premier League 2017/18 desde StatsBomb (datos
 
 ```bash
 pip install pandas requests tqdm
+npm install
 ```
 
 ### 2️⃣ Ejecutar el procesador de datos
@@ -28,17 +29,18 @@ python data_processor.py
 
 Esto descargará todos los datos de StatsBomb y creará:
 
-- `data/pass_sequences.json` - Secuencias de pases
 - `data/matches.json` - Información de partidos
-- `data/shots.json` - Todos los shots
+- `data/possessions.json` - Secuencias de posesión
+- `data/passes.json` - Pases
+- `data/shots.json` - Tiros
 
 ⏱️ Esto toma ~2-5 minutos dependiendo de tu conexión
 
 ### 3️⃣ Abrir la visualización
 
-1. Abre `visualization/index.html` en tu navegador
-2. Selecciona un partido
-3. Explora las secuencias de pases
+1. Ejecuta `npm run dev`
+2. Abre la URL que te muestra Vite
+3. Selecciona un partido y explora las vistas interactivas
 
 ## 🎮 Cómo Usar
 
@@ -47,36 +49,32 @@ Esto descargará todos los datos de StatsBomb y creará:
 - **Partido**: Selecciona un partido para ver sus secuencias
 - **Equipo**: Filtra por equipo específico
 - **Filtro**:
-  - _Todas las secuencias_: Todas
-  - _Con Shot_: Solo secuencias que terminaron en disparo
-  - _Con Gol_: Solo secuencias que resultaron en gol
-  - _Sin Gol_: Secuencias que no terminaron en gol
+  - _Todas_: Todas las secuencias
+  - _Con tiro_: Solo secuencias que terminaron en disparo
+  - _Con gol_: Solo secuencias que resultaron en gol
+  - _Sin gol_: Secuencias que no terminaron en gol
 
-- **▶ Reproducir**: Reproduce automáticamente todas las secuencias
-- **↻ Reiniciar**: Vuelve al inicio
+- **Mapa de calor**: Cambia entre todo el partido filtrado y la posesión seleccionada
 
 ### Visualización del Campo
 
 - **Líneas de pases**:
   - 🟢 Verde = Pases exitosos
-  - 🔴 Rojo = Pases que llegaron a gol
-  - 🟠 Naranja = Pases fallidos
+  - 🔴 Rojo = Pases fallidos
+  - 🔵 Azul = Primer pase de la posesión
 
-- **Puntos**:
-  - 🔵 Azul = Inicio de la secuencia
-  - ⚪ Gris = Puntos intermedios
-  - 🔴 Rojo = Último punto (antes del shot)
-
-- **Línea punteada**: Shot (disparo)
+- **Marcador de tiro**:
+  - 🟠 Naranja = Tiro
+  - 🔴 Rojo = Tiro que termina en gol
 
 ### Estadísticas
 
-- **Secuencias**: Total de secuencias filtradas
-- **Con Shot**: Cuántas terminaron en disparo
-- **Con Gol**: Cuántas resultaron en gol
-- **Tasa Conversión**: % de shots que fueron goles
-- **Pases Promedio**: Promedio de pases por secuencia
-- **Precisión**: % de pases exitosos
+- **Posesiones**: Total de secuencias filtradas
+- **Con tiro**: Cuántas terminaron en disparo
+- **Con gol**: Cuántas resultaron en gol
+- **Precisión**: % de pases efectivos
+- **Promedio pases**: Promedio de pases por posesión
+- **Dominancia**: Ventaja del equipo local al final del partido
 
 ## 📁 Estructura del Proyecto
 
@@ -84,14 +82,21 @@ Esto descargará todos los datos de StatsBomb y creará:
 PROYECTO_STATSBOMB/
 ├── main.ipynb                    # Notebook original (sin cambios)
 ├── data_processor.py             # Script principal de procesamiento ⭐
+├── package.json                  # Vite + React + Recharts
+├── vite.config.js                # Configuración de Vite
+├── index.html                    # Entry point de Vite
+├── src/
+│   ├── main.jsx                  # Dashboard React
+│   └── styles.css                # Estilos del dashboard
 ├── data/
-│   ├── pass_sequences.json       # Secuencias de pases procesadas
 │   ├── matches.json              # Info de partidos
+│   ├── possessions.json          # Secuencias de posesión
+│   ├── passes.json               # Pases
 │   └── shots.json                # Info de todos los shots
 └── visualization/
-    ├── index.html                # Dashboard interactivo
-    ├── app.js                    # Lógica JavaScript
-    └── style.css                 # Estilos
+  ├── index.html                # Compatibilidad / mount alterno
+  ├── app.js                    # Implementación previa
+  └── style.css                 # Estilos previos
 ```
 
 ## 📊 Datos Disponibles
@@ -156,19 +161,17 @@ Para la temporada 2017/18 de Premier League (~2300 matches):
 
 ## 💡 Ideas Futuras
 
-- Agregar análisis de jugadores individuales
-- Mapa de calor de posiciones
-- Comparativa entre equipos
+- Agregar comparativa entre más de dos equipos
 - Exportar visualizaciones como imágenes
 - Análisis de presión y defensa
-- Red de passes (quién pasa a quién)
+- Red de pases (quién pasa a quién)
 
 ## 📝 Notas
 
-- El procesamiento inicial toma tiempo (descarga mucho datos)
-- Los datos son históricos (2017/18)
-- La visualización es estática pero interactiva (no simula movimiento real)
-- Optimizado para desktop (funciona en mobile pero es mejor en grande)
+- El procesamiento inicial toma tiempo (descarga muchos datos)
+- Los datos son históricos
+- El frontend usa React y Vite, así que debes iniciar el servidor para verlo
+- Optimizado para desktop, pero responsivo en mobile
 
 ---
 

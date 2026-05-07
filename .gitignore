@@ -7,11 +7,9 @@ __pycache__/
 env/
 venv/
 *.egg-info/
-dist/
 build/
 
 # Datos (generados por data_processor.py)
-data/*.json
 !data/.gitkeep
 
 # IDE
@@ -26,3 +24,5 @@ Thumbs.db
 
 # Logs
 *.log
+
+node_modules/
